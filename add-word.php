@@ -1,7 +1,7 @@
 <?php
 include("db.php");
 
-$stmt = $pdo->prepare("SELECT part_of_speech FROM words");
+$stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
