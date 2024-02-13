@@ -2,6 +2,10 @@ body {
     margin:0;
     font-size: large;
 }
+header {
+    width: 100%;
+    background-color: rgb(221, 221, 64);
+}
 nav {
     
     width: 100%;
@@ -36,7 +40,7 @@ section {
     justify-content: center;
     margin-top: 50px;
     background-color: rgb(168, 168, 164);
-    width: 55vw;
+    width: 600px;
     height: 60vh;
     margin-left:auto;
     margin-right: auto;
@@ -120,4 +124,29 @@ select {
 span {
     font-size: 25px;
     color:green;
+}
+/*style table*/
+table {
+    border:solid thin;
+    padding: 10px;
+    background-color: bisque;
+}
+td {
+    border:solid thin;
+}
+.show div {
+    display: flex;
+}
+.show form #delete {
+    align-self: center;
+    justify-self: center;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 20px;
+    background-color: rgb(242, 242, 21);
+}
+.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

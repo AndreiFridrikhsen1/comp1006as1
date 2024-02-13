@@ -2,7 +2,7 @@
 include("db.php");
 // fetch data from added words table and part_of_speech
 
-$stmt = $pdo->prepare("SELECT part_of_speech FROM words");
+$stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,17 +44,19 @@ if (isset($_POST['generate']) || isset($_POST['add']) || isset($_POST['remove'])
                 $stmt = $pdo->prepare("SELECT word_id,word FROM words where part_of_speech = :part_of_speech order by RAND() limit 1");
                 $stmt ->bindParam(":part_of_speech", $word['added_word']);
                 $stmt->execute();
-                $words = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($words as $word){
+                $fetchedWords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($fetchedWords as $fetchedWord){
                     // added the words added by the user to the string
-                    $sentence .= htmlspecialchars($word['word']) . " ";
+                    $sentence .= htmlspecialchars($fetchedWord['word']) . " ";
                     //fetch translations of the words and add them to the string 
                     $stmt = $pdo->prepare("SELECT translation FROM translations where word_id = :id");
-                    $stmt ->bindParam(":id", $word["word_id"]);
+                    $stmt ->bindParam(":id", $fetchedWord["word_id"]);
                     $stmt->execute();
                     $translations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($translations as $translation){
+                       
                         $translationString .= htmlspecialchars($translation["translation"]) ." ";
+                        
                     }
                     
 

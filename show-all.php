@@ -1,12 +1,22 @@
 <?php 
 include("db.php");
-$stmt = $pdo->prepare("SELECT * FROM words");
-$stmt->execute();
-$words = $stmt->fetchAll(PDO::FETCH_ASSOC);
+function fetchAllWords($pdo){// pass in pdo to make it acessible inside the function
+    $data =[]; //stores fetched words and translations
+    $stmt = $pdo->prepare("SELECT * FROM words");
+    $stmt->execute();
+    $data['words'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare("SELECT * FROM translations");
-$stmt->execute();
-$translations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT * FROM translations");
+    $stmt->execute();
+    $data['translations'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
+    
+
+}
+$data = fetchAllWords($pdo);
+
+
+    
     function displayTable($words) {
         echo '<table>';
         echo '<tr><th>ID</th><th>Word</th><th>Part of Speech</th></tr>';
@@ -44,7 +54,7 @@ $translations = $stmt->fetchAll(PDO::FETCH_ASSOC);
    <?php include("shared/header.php")?>
    <section class="show">
         <div>
-            <?php displayTable($words); displayTable2($translations) ?>
+            <?php displayTable($data['words']); displayTable2($data['translations']) ?>
         </div>
         <form method="POST" action = "delete-all.php">
             <input type="submit" name="delete" id="delete" value="Delete All">
