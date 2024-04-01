@@ -9,10 +9,22 @@
 </head>
 <body>
 <nav>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="add-word.php">Add word</a></li>
-        <li><a href="show-all.php">Show all words</a></li>
-        <li><a href="login.php">Sign in</a></li>
-        <li><a href="register.php">Sign up</a></li>
+        
+        
+        <?php
+        session_start();
+        if(empty($_SESSION['username'])){
+                echo '<li><a href="home.php">Home</a></li>';
+                echo '<li><a href="login.php">Log in</a></li>';
+                echo '<li><a href="register.php">Register</a></li>';
+        }else {
+                echo '<li><a href="index.php">Home</a></li>';
+                echo '<li><a href="add-word.php">Add word</a></li>';
+                echo '<li><a href="show-all.php">Show all words</a></li>';
+                echo '<li>'.htmlspecialchars($_SESSION['username']).'</li>';
+                echo '<li><a href="logout.php">Log out</a></li>';
+        }
+        ?>
+        
 
 </nav>

@@ -1,6 +1,7 @@
 <?php
 $title = "Home";
 include("db.php");
+include("auth.php");
 // fetch data from added words table and part_of_speech
 
 $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");

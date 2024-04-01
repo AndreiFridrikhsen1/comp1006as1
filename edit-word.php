@@ -1,4 +1,6 @@
 <?php
+// display message if word updated successfully
+
 include("db.php");
 $title = "Edit word";
 $wordId = $_GET['wordId'];
@@ -78,13 +80,15 @@ if (isset($_POST['submit'])) {
             $added = true;
             $pdo=null;
             // refresh page
-            header('Location: '."show-all.php");
+            header('Location:show-all.php?success');
         }
 }
 }
 ?>
 
-    <?php include("shared/header.php"); if ($added) {echo "<h1>Word was added!</h1>";} if ($wordExists){echo '<h1>'.$errors[0].'</h1>'; if ($containsDigits) {echo '<h1>'.$errors[0].'</h1>';};}?>
+    <?php include("shared/header.php"); if ($added) {echo "<h1>Word was added!</h1>";} if ($wordExists){echo '<h1>'.$errors[0].'</h1>'; if ($containsDigits) {echo '<h1>'.$errors[0].'</h1>';}} if(isset($_GET['success'])){
+        echo '<script>alert("Word updated successfuly")</script>';
+}?>
     <h1><?php echo $title?></h1> 
     <section>
         <form method="post" action ="edit-word.php">

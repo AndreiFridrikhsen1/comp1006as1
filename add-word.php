@@ -1,6 +1,7 @@
 <?php
 $title = "Add word";
 include("db.php");
+include("auth.php");
 $title = "Add word";
 $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
 $stmt->execute();
