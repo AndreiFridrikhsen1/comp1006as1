@@ -2,14 +2,13 @@
 include("db.php");
 $title = "Edit word";
 $wordId = $_GET['wordId'];
-
 $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $validated = true; 
 $added = false;
-$errors = ["Word already exists", "Word shouln't contain any digits"];
+$errors = ["Word already exists", "Word shoudn't contain any digits"];
 $wordExists = false;
 $containsDigits = false;
 if (isset($_POST['submit'])) {
@@ -18,6 +17,8 @@ if (isset($_POST['submit'])) {
     $dropdown = $_POST['dropdown']; 
     $word = strtolower($word);
     $translation=strtolower($translation);
+    #get wordId to be deleted from post array
+    $wordId = $_POST['wordId'];
 
     $partOfSpeech = "";
     //check if word exists
@@ -67,12 +68,11 @@ if (isset($_POST['submit'])) {
             $stmnt->bindParam(":placeholder2", $partOfSpeech);
             $stmnt->bindParam(":placeholder3", $wordId);
             $stmnt->execute();
-            // get the last inserted
-            $id = $pdo ->lastInsertId();
-            $stmt = $pdo->prepare("INSERT INTO translations (word_id,translation,part_of_speech) VALUES (:id,:translation, :part_of_speech)");
+            
+            $stmt = $pdo->prepare("UPDATE translations SET translation =:translation, part_of_speech = :part_of_speech where word_id = :id");
             $stmt->bindParam(":translation", $translation);
             $stmt->bindParam(":part_of_speech", $partOfSpeech);
-            $stmt->bindParam(":id", $id);
+            $stmt->bindParam(":id", $wordId);
             $stmt->execute();
             
             $added = true;
@@ -95,13 +95,14 @@ if (isset($_POST['submit'])) {
     <?php include("shared/header.php"); if ($added) {echo "<h1>Word was added!</h1>";} if ($wordExists){echo '<h1>'.$errors[0].'</h1>'; if ($containsDigits) {echo '<h1>'.$errors[0].'</h1>';};}?>
     <h1><?php echo $title?></h1> 
     <section>
-        <form method="post" action ="add-word.php">
+        <form method="post" action ="edit-word.php">
             <input type="text" id="word" name="word" placeholder="Word" required><br>
             <input type="text" id="translation" name="translation" placeholder="Translation" required><br>
             <p>Part of speech</p>
             <select name="dropdown" id="dropdown">
                 <?php if (empty($results)){echo "<option>Empty</option>";} else { foreach($results as $result){ echo "<option>".htmlspecialchars($result['part_of_speech'])."</option>";}}?>
             </select>
+            <input type="hidden" name="wordId" id="wordId" value="<?php echo $wordId?>">
             <input type="text"  placeholder="type here: noun, verb, adjective" id="partOfSpeech" name="partOfSpeech"></br>
             <input type="submit" name="submit" id="submit">
         </form>
