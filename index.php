@@ -1,4 +1,5 @@
 <?php
+$title = "Home";
 include("db.php");
 // fetch data from added words table and part_of_speech
 
@@ -69,16 +70,7 @@ if (isset($_POST['generate']) || isset($_POST['add']) || isset($_POST['remove'])
     }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
-    <link href = "style.css" rel="stylesheet">
-</head>
-<body>
-   <?php include("shared/header.php")?>
+<?php include("shared/header.php")?>
    <div class='sentence'>
    <?php
     if(!empty($sentence)){

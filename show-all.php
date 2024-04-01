@@ -1,4 +1,5 @@
 <?php 
+$title = "Show all";
 include("db.php");
 $index = 1;
 function fetchAllWords($pdo){// pass in pdo to make it acessible inside the function
@@ -45,16 +46,7 @@ $data = fetchAllWords($pdo);
     }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
-    <link href = "style.css" rel="stylesheet">
-</head>
-<body>
-   <?php include("shared/header.php")?>
+<?php include("shared/header.php")?>
    <section class="show">
         <div>
             <?php displayTable($data['words'], $index); displayTable2($data['translations']) ?>
