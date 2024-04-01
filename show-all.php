@@ -1,5 +1,6 @@
 <?php 
 include("db.php");
+$index = 1;
 function fetchAllWords($pdo){// pass in pdo to make it acessible inside the function
     $data =[]; //stores fetched words and translations
     $stmt = $pdo->prepare("SELECT * FROM words");
@@ -17,12 +18,12 @@ $data = fetchAllWords($pdo);
 
 
     
-    function displayTable($words) {
+    function displayTable($words,$index) {
         echo '<table>';
-        echo '<tr><th>ID</th><th>Word</th><th>Part of Speech</th></tr>';
+        echo '<tr><th>ID</th><th>Word</th><th>Part of Speech</tr>';
         foreach ($words as $word) {
             echo '<tr>';
-            echo '<td>' . htmlspecialchars($word['word_id']) . '</td>'; 
+            echo '<td>' .  $index++ . '</td>'; 
             echo '<td>' . htmlspecialchars($word['word']) . '</td>'; 
             echo '<td>' . htmlspecialchars($word['part_of_speech']) . '</td>'; 
             echo '</tr>';
@@ -31,11 +32,13 @@ $data = fetchAllWords($pdo);
     }
     function displayTable2($translations) {
         echo '<table>';
-        echo '<tr><th>Translation</th><th>Part of Speech</th></tr>';
+        echo '<tr><th>Translation</th><th>Part of Speech</th><th>Actions</th></tr>';
         foreach ($translations as $translation) {
             echo '<tr>';
             echo '<td>' . htmlspecialchars($translation['translation']) . '</td>'; 
             echo '<td>' . htmlspecialchars($translation['part_of_speech']) . '</td>'; 
+            echo '<td><a class = "button" href="edit-word.php?wordId=' . htmlspecialchars($translation['word_id']) . ' ">Edit</a>
+            <a class="button" href="delete.php?wordId=' . htmlspecialchars($translation['word_id']) . '">Delete</a></td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -54,13 +57,15 @@ $data = fetchAllWords($pdo);
    <?php include("shared/header.php")?>
    <section class="show">
         <div>
-            <?php displayTable($data['words']); displayTable2($data['translations']) ?>
+            <?php displayTable($data['words'], $index); displayTable2($data['translations']) ?>
         </div>
         <form method="POST" action = "delete-all.php">
-            <input type="submit" name="delete" id="delete" value="Delete All">
+            <input class="button" type="submit" name="deleteAll" id="delete" value="Delete All">
         </form>
         
     </section>
+    
+    <script src="js/script.js"></script>
    
 </body>
 </html>
