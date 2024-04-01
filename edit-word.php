@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
             $added = true;
             $pdo=null;
             // refresh page
-            header("refresh: 1;");
+            header('Location: '."show-all.php");
         }
 }
 }
