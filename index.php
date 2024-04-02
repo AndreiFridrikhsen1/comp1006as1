@@ -1,19 +1,26 @@
 <?php
-$title = "Home";
-include("db.php");
 include("auth.php");
-// fetch data from added words table and part_of_speech
+$title = "Home";
+try{
+    include("db.php");
+    // fetch data from added words table and part_of_speech
 
-$stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
-$stmt->execute();
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare("SELECT added_word FROM added_words");
-$stmt->execute();
-$addedWords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$picturePaths = [];
-$sentence = "";
-$translationString="";
+    $stmt = $pdo->prepare("SELECT added_word FROM added_words");
+    $stmt->execute();
+    $addedWords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $picturePaths = [];
+    $sentence = "";
+    $translationString="";
+}
+catch(Exception $error){
+    header('location: errorPage.php');
+}
+
+
 
 if (isset($_POST['generate']) || isset($_POST['add']) || isset($_POST['remove']) ) {
     $dropdown = $_POST['dropdown'];

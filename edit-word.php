@@ -13,6 +13,7 @@ $added = false;
 $errors = ["Word already exists", "Word shoudn't contain any digits"];
 $wordExists = false;
 $containsDigits = false;
+$partOfSpeechSelected = false;
 if (isset($_POST['submit'])) {
     
     if(!empty($_FILES['picture'])){

@@ -1,5 +1,10 @@
 <?php 
-include("db.php");
+try{
+    include("db.php");
+}
+catch(Exception $error){
+    header('location: errorPage.php');
+}
 $deleted = false;
 // get word id from the url
 

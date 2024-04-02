@@ -1,6 +1,11 @@
 <?php
 $title = "Add word";
-include("db.php");
+try{
+    include("db.php");
+}
+catch(Exception $error){
+    header('location: errorPage.php');
+}
 include("auth.php");
 $title = "Add word";
 $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
@@ -36,6 +41,7 @@ if (isset($_POST['submit'])) {
 
     $partOfSpeech = "";
     //check if word exists
+
     $stmt = $pdo->prepare("SELECT * FROM words");
     $stmt->execute();
     $words = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -75,27 +81,31 @@ if (isset($_POST['submit'])) {
             $partOfSpeechSelected = false;
             $validated = false;
         }
-
-        //insert into data table
-        if ($validated && isset($_POST["submit"])) {
-            $stmnt =$pdo->prepare("INSERT INTO words (word, part_of_speech, picture) VALUES (:placeholder1,:placeholder2, :pic)");
-            $stmnt->bindParam(":placeholder1", $word);
-            $stmnt->bindParam(":placeholder2", $partOfSpeech);
-            $stmnt->bindParam(":pic", $picPath);
-            $stmnt->execute();
-            // get the last inserted
-            $id = $pdo ->lastInsertId();
-            $stmt = $pdo->prepare("INSERT INTO translations (word_id,translation,part_of_speech) VALUES (:id,:translation, :part_of_speech)");
-            $stmt->bindParam(":translation", $translation);
-            $stmt->bindParam(":part_of_speech", $partOfSpeech);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            
-            $added = true;
-            $pdo=null;
-            // refresh page
-            header("refresh: 1;");
+        try{
+            //insert into data table
+            if ($validated && isset($_POST["submit"])) {
+                $stmnt =$pdo->prepare("INSERT INTO words (word, part_of_speech, picture) VALUES (:placeholder1,:placeholder2, :pic)");
+                $stmnt->bindParam(":placeholder1", $word);
+                $stmnt->bindParam(":placeholder2", $partOfSpeech);
+                $stmnt->bindParam(":pic", $picPath);
+                $stmnt->execute();
+                // get the last inserted
+                $id = $pdo ->lastInsertId();
+                $stmt = $pdo->prepare("INSERT INTO translations (word_id,translation,part_of_speech) VALUES (:id,:translation, :part_of_speech)");
+                $stmt->bindParam(":translation", $translation);
+                $stmt->bindParam(":part_of_speech", $partOfSpeech);
+                $stmt->bindParam(":id", $id);
+                $stmt->execute();
+                
+                $added = true;
+                $pdo=null;
+                // refresh page
+                header("refresh: 1;");
+            }
+        }catch(Exception $error){
+            header('location: errorPage.php');
         }
+        
 }
 }
 ?>

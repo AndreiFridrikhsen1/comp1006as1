@@ -1,6 +1,11 @@
 <?php 
 $title = "Show all";
-include("db.php");
+try{
+    include("db.php");
+}
+catch(Exception $error){
+    header('location: errorPage.php');
+}
 include("auth.php");
 $index = 1;
 function fetchAllWords($pdo){// pass in pdo to make it acessible inside the function
