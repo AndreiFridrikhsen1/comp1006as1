@@ -9,6 +9,7 @@ $errors = [];
 $validated = true;
 $registred = false;
 $hash;
+$userExist = false;
 if(isset($_POST['register'])){
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -28,13 +29,28 @@ if(isset($_POST['register'])){
         // hash password
         $hash = password_hash($password, PASSWORD_DEFAULT);
     }
-    if($validated == true){// insert data into db
-        $stmnt =$pdo->prepare("INSERT INTO users (username, password) VALUES (:placeholder1,:placeholder2)");
-        $stmnt->bindParam(":placeholder1", $username);
-        $stmnt->bindParam(":placeholder2", $hash);
-        $stmnt->execute();
-        $pdo = null;
-        $registred = true;
+    if($validated == true){//check if the user doesnt exist and insert data into db
+        $stmt =$pdo->prepare("select * from users where username=:placeholder");
+        $stmt->bindParam(":placeholder", $username);
+        $stmt->execute();
+        $users= $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(empty($users)){
+            $stmnt =$pdo->prepare("INSERT INTO users (username, password) VALUES (:placeholder1,:placeholder2)");
+            $stmnt->bindParam(":placeholder1", $username);
+            $stmnt->bindParam(":placeholder2", $hash);
+            $stmnt->execute();
+            $pdo = null;
+            $registred = true;
+        }else{
+            $userExist = true;
+        }
+        
+        
+           
+            
+        
+
+           
         
     }
     
@@ -48,7 +64,7 @@ include("shared/header.php");
 <section class="<?php echo $title?>">
         <h1><?php echo $title?></h1>
         <h5>Passwords must be a minimum of 8 characters, including 1 digit, 1 upper-case letter, and 1 lower-case letter.</h5>
-        <?php if(sizeof($errors) > 0){foreach($errors as $error){echo $error."<br>";}} if($registred){echo "Account was successfuly created";}?>
+        <?php if(sizeof($errors) > 0){foreach($errors as $error){echo $error."<br>";}} if($registred){echo "Account was successfuly created";} if($userExist){echo "This email already exists";}?>
         <form method="post" action="register.php">
 
         <fieldset>

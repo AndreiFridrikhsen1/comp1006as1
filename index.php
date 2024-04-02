@@ -11,7 +11,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $pdo->prepare("SELECT added_word FROM added_words");
 $stmt->execute();
 $addedWords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$picturePaths = [];
 $sentence = "";
 $translationString="";
 
@@ -60,6 +60,18 @@ if (isset($_POST['generate']) || isset($_POST['add']) || isset($_POST['remove'])
                         $translationString .= htmlspecialchars($translation["translation"]) ." ";
                         
                     }
+                    //fetch pictures
+                    $stmt = $pdo->prepare("SELECT picture FROM words where word_id = :id");
+                    $stmt ->bindParam(":id", $fetchedWord["word_id"]);
+                    $stmt->execute();
+                    $pictures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach($pictures as $picture){
+                    if(!empty($picture['picture'])){
+                        array_push($picturePaths, $picture['picture']);
+
+                    }
+                    }
+                    
                     
 
                 }
@@ -77,6 +89,11 @@ if (isset($_POST['generate']) || isset($_POST['add']) || isset($_POST['remove'])
     if(!empty($sentence)){
         echo "<p> Random sentence: ".$sentence."</p>";
         echo "<p> Translation: ".$translationString."</p>";
+        echo "<div id='imgContainer'>";
+        foreach($picturePaths as $image){
+            echo "<img src='" . htmlspecialchars($image) . "' alt='Word Image' />";
+        }
+        echo "</div>";
                 
     }
 

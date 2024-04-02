@@ -7,13 +7,27 @@ $wordId = $_GET['wordId'];
 $stmt = $pdo->prepare("SELECT DISTINCT part_of_speech FROM words");
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$picPath;
 $validated = true; 
 $added = false;
 $errors = ["Word already exists", "Word shoudn't contain any digits"];
 $wordExists = false;
 $containsDigits = false;
 if (isset($_POST['submit'])) {
+    
+    if(!empty($_FILES['picture'])){
+        $tempLocation = $_FILES['picture']['tmp_name'];
+        $type = mime_content_type($tempLocation);
+        $picPath = "pictures/" . $_FILES['picture']['name'];
+        if($type == "image/jpg" || $type == "image/jpeg"|| $type=="image/png"){
+            move_uploaded_file($tempLocation,$picPath);
+        }else {
+            echo "invalid type";
+            $validated = false;
+            exit();
+        }
+        
+    }
     $word = trim($_POST['word']);
     $translation = trim($_POST['translation']);
     $dropdown = $_POST['dropdown']; 
@@ -91,16 +105,20 @@ if (isset($_POST['submit'])) {
 }?>
     <h1><?php echo $title?></h1> 
     <section>
-        <form method="post" action ="edit-word.php">
+    
+        <form id="addWord" method="post" action ="add-word.php" enctype="multipart/form-data">
+        <?php if($containsDigits){echo "<p class='error'>Word and translation should only contain letters, not digits or spaces.</p>";} if(!$partOfSpeechSelected){echo "<p class='error'>Choose part of speech</p>";}  ?>
             <input type="text" id="word" name="word" placeholder="Word" required><br>
             <input type="text" id="translation" name="translation" placeholder="Translation" required><br>
             <p>Part of speech</p>
+            <input type="text"  placeholder="type here: noun, verb, adjective" id="partOfSpeech" name="partOfSpeech"></br>
             <select name="dropdown" id="dropdown">
                 <?php if (empty($results)){echo "<option>Empty</option>";} else { foreach($results as $result){ echo "<option>".htmlspecialchars($result['part_of_speech'])."</option>";}}?>
             </select>
-            <input type="hidden" name="wordId" id="wordId" value="<?php echo $wordId?>">
-            <input type="text"  placeholder="type here: noun, verb, adjective" id="partOfSpeech" name="partOfSpeech"></br>
+            <p>Add picture</p>
+            <input id="picture" name="picture" type="file" accept="image/*">
             <input type="submit" name="submit" id="submit">
+            
         </form>
     </section>
     

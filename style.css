@@ -2,6 +2,7 @@ body {
     margin:0;
     font-size: 110%;
 }
+img{width: 75px; height: 75px;}
 html, body {
     height: 100%;
     width: 100%;
@@ -19,7 +20,7 @@ nav {
     flex-direction: row;
     align-items: center;
 }
-
+form {box-sizing: border-box;}
 li {
     padding:10px;
     border: solid thin;
@@ -34,6 +35,20 @@ li {
     color: green;
     text-align: center;
 }
+.sentence img {
+    display: flex;
+    margin-left:auto;
+    margin-right: auto;
+    flex-direction: column;
+    
+}
+#imgContainer{
+    display: flex;
+    margin-left:auto;
+    margin-right: auto;
+    border:solid thin;
+    width: fit-content;
+}
 li:first-child{
     margin-left: 20px;
 }
@@ -45,7 +60,7 @@ section {
     margin-top: 50px;
     background-color: rgb(196, 196, 168);
     width: 60%;
-    height: 60vh;
+    height: fit-content;
     margin-left:auto;
     margin-right: auto;
     border:solid thin;
@@ -59,12 +74,13 @@ section {
     margin-top: 50px;
     width: 100%;
     font-size: 25px;
+    box-sizing:border-box;
 }
 #translation{
     margin-top: 15px;
     width: 100%;
     font-size: 25px;
-
+    box-sizing:border-box;
     
     
 }
@@ -73,11 +89,20 @@ select {
     height: 50px;
 }
 #submit {
-    margin-top: 10px;
+    margin-top: 50px;
     padding: 10px;
     border-radius: 10px;
+    margin-bottom: 50px;
 }
-
+#addWord{
+    display: flex;
+    flex-direction: column;
+}
+#addWord #submit {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
 .home div {
     background-color: rgb(243, 243, 243);
     width: 50%;
@@ -97,6 +122,10 @@ select {
     background-color: beige;
 
 }
+.error {
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
 .button {
     width: 200px;
     padding: 10px;
@@ -105,9 +134,10 @@ select {
 #dropdown {
     margin-bottom: 20px;
     font-size: 25px;
+    width: 100%;
 }
 .home {
-    width: 50vw;
+    width: 50%;
     border-radius: 50px;
     display: flex;
     flex-direction: column;
@@ -138,12 +168,15 @@ table {
     border:solid thin;
     padding: 15px;
     background-color: rgb(244, 237, 228);
+    border-right:none;
+    border-left: none;
 }
 td {
     border:solid thin;
     padding: 10px;
     border-spacing: 0;
     border-collapse: collapse;
+    height:75px;
 }
 th{
     border: solid thin;
@@ -181,5 +214,15 @@ tr {
 .Register form, .Login form {width: 100%; display: flex; flex-direction: column;}
 .offset-button {padding: 15px; border-radius: 10px; margin-top: 10px; margin-left: auto; margin-right: auto; background-color: yellow;margin-bottom:50px;}
 @media only screen and (max-width: 765px) {
+    section{width: auto;}
     .Login, .Register {width: auto;}
+    nav{flex-direction: column; height: fit-content;}
+    nav li {margin-right: auto;}
+    li:first-child {
+        margin-left: 0px;
+    }
+    li:last-child {
+        margin-bottom: 20px;
+    }
+    form{margin-left: 20px;}
   }

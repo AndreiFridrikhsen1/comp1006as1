@@ -28,6 +28,9 @@ $data = fetchAllWords($pdo);
             echo '<td>' .  $index++ . '</td>'; 
             echo '<td>' . htmlspecialchars($word['word']) . '</td>'; 
             echo '<td>' . htmlspecialchars($word['part_of_speech']) . '</td>'; 
+            if(!empty($word['picture'])){
+                echo '<td><img src="' . htmlspecialchars($word['picture']) . '" alt="Word Picture" /></td>'; 
+            }
             echo '</tr>';
         }
         echo '</table>';
@@ -38,7 +41,8 @@ $data = fetchAllWords($pdo);
         foreach ($translations as $translation) {
             echo '<tr>';
             echo '<td>' . htmlspecialchars($translation['translation']) . '</td>'; 
-            echo '<td>' . htmlspecialchars($translation['part_of_speech']) . '</td>'; 
+            echo '<td>' . htmlspecialchars($translation['part_of_speech']) . '</td>';
+             
             echo '<td><a class = "button" href="edit-word.php?wordId=' . htmlspecialchars($translation['word_id']) . ' ">Edit</a>
             <a class="button" href="delete.php?wordId=' . htmlspecialchars($translation['word_id']) . '">Delete</a></td>';
             echo '</tr>';
